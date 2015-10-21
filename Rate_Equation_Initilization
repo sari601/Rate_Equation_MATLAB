@@ -1,0 +1,54 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Initializing the data%%%%%%%%%%%%%%%%%%%%%%%
+%% all data in memory to start
+clc
+clear
+close all
+%% Numeric constants fundamental
+global h c
+h = 6.626e-34; % Plancks constant (J*s^-1)
+c = 3e8; % speed of light (m*s^-1)
+%% Laser parameters values
+global w d L gamma_xy vg a g0 nt beta_sp eta_i q tau_p tau o
+w = 2e-4; % waveguide width (cm)
+d = 80e-8; % active layer thickness (cm)
+L = 250e-4; % cavity length (cm)
+V = w*d*L; % cavity volume (cm^3)
+gamma_xy = 0.032; % confinement factor
+vg = 4.2e10; % group velocity (cm*s^-1)
+a = 5.34e-16; % differential gain @ th (cm^2)
+g0 = vg*a; % gain @ th (cm^3*s^-1)
+nt = 1.8e18; % transparency density (cm^-3)
+beta_sp = 0.869e-4; % spontaneous emission factor @ th
+eta_i = 0.8; % internal quantum efficency (10%)
+q = 1.6e-19; % electron charge (C)
+tau_p = 2.77e-12; % photon lifetime (s)
+tau = 2.71e-9; % carrier lifetime @ th (s)
+o = 3.5; % optical linewidth enhancement factor
+%% Power input
+global I0 I1 I t N_p N wf
+% Calculation of simulation time
+npt = 10*1024; % number of points
+freq = 15e9; % modulation frequency (Hz)
+wf = 2*pi*freq; % angular frequency
+Tint = 1/freq; % bit period (s)
+Tspan = 1000*Tint; % number of time spans to graph (s)
+dt = Tspan/npt; % temporal resolution
+t = (0:npt-1)*dt; % time span
+P0 = 150e-3; % input power (W)
+lambda = 980e-7; % wevalength of laser (cm)
+nu = c/lambda; % frequency of photons (Hz)
+Vp = 1.25e-10; % mode volume of the photon reservoir (cm^-3)
+F = 0.5; % fraction of power delivered
+alpha_m = 45.6; % mirror loss(cm^-1)
+alpha_i = 5; % spatial average over any internal losses present in the cavity(cm^-1)
+eta_0 = (F*alpha_m)/(alpha_m+alpha_i); % output coupling efficency
+%% Calculation of Np % Optical output power
+N_p = (P0*tau_p)/(eta_i*eta_0*h*nu*Vp);
+%% Calculation of N % Carrier density at threshold
+% A negligible
+B = 0.8e-10; % (cm^3*s^-1)
+C = 3.5e-30; % (cm^6*s^-1)
+N = 1/(tau*g0*gamma_xy) + nt;
+%% Current calculation
+I0 = (q*V/eta_i)*(B*N^2+C*N^3)+(q*V/eta_i)*g0*(N-nt)*N_p; % Threshold Current
+I = 22e-3;
