@@ -1,3 +1,3 @@
 # Projects
-it hold previous project sari601 worked on 
-h
+it hold the files for the rate equation used to find the density of the carriers & photons in the cavity of the laser
+
