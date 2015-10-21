@@ -1,0 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Rate Equation Function%%%%%%%%%%%%%%%%%%%%
+function dy = rate(t,y)
+global w d L gamma_xy vg a g0 nt beta_sp eta_i q tau_p tau o
+global I M npt
+%%%%%%%%%%%%%%%%%Current Modulation%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+I1 = 45e-3*sin(2*pi*1e8*t); % modulation signal (A) sin wave
+I2 = 15e-3*square(2*pi*1e8*t); % modulation signal (A) square wave
+%%%%%%%%%%%%%%%%%Rate Equations%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dy = zeros(3,1); % Initialization vector results
+V = d*w*L; % Calculating the volume of the cavity of the laser
+dy(1) = ( ((I)*eta_i) / (q*V))-(g0*(y(1)-nt)*y(2))-y(1) / tau ; % rate equation for the density of carriers
+dy(2) = gamma_xy*g0*(y(1)-nt)*y(2)-y(2)/tau_p+(beta_sp*gamma_xy*y(1)) / tau; % rate equation for the density of photons
+dy(3) = o/2 *( gamma_xy*vg*g0 * (y(1) - nt ) - 1/tau_p );
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end
